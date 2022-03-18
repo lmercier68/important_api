@@ -9,7 +9,11 @@ use App\Repository\FinancialOperationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FinancialOperationRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get', 'post'],
+    paginationEnabled: false
+)]
 #[ApiFilter(DateFilter::class, properties: ['date'])]
 class FinancialOperation
 {
