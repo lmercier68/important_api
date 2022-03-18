@@ -23,16 +23,24 @@ final class FinancialOperationDataPersister implements ContextAwareDataPersister
     public function persist($data, array $context = [])
     {
 // call your persistence layer to save $data
-
+        $referenceData =$data;
+        $this->financialOperationrepository->add($data);
+        $data->setTotalCost($data->getPrice() * $data->getRecurssDuration() + $data->getLastMensuality());
 
         if($data->getRecurssive()){
-            for($i = 1 ; $i <= $data->getRecurssDuration(); $i++){
+            $referenceDate = $data->getDate();
+            for($i = 1 ; $i < $data->getRecurssDuration(); $i++){
                 $operationRecurentItem = clone $data;
-                $operationRecurentItem->setDate($data->getDate()->add(new \DateInterval('P'.$i.'M')));
+
+                $operationRecurentItem->setDate($referenceDate->add(new \DateInterval('P'.'1'.'M')));
+                $operationRecurentItem->setMensualityNumber($i+1);
+                if($data->getRecurssDuration()-1 === $i){
+                    $operationRecurentItem->setPrice($data->getLastMensuality());
+                }
                 $this->financialOperationrepository->add($operationRecurentItem);
             }
         }
-        $this->financialOperationrepository->add($data);
+
         return new Response(json_encode( $data->getDate()));
         //  return $data;
     }
