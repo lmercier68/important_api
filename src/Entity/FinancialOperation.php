@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FinancialOperationRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations: ['get', 'post'],
+    collectionOperations: ['get','post','put'],
+    itemOperations: ['get', 'post','put'],
     paginationEnabled: false
 )]
 #[ApiFilter(DateFilter::class, properties: ['date'])]

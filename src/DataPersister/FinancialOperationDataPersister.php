@@ -20,10 +20,9 @@ final class FinancialOperationDataPersister implements ContextAwareDataPersister
         return $data instanceof FinancialOperation;
     }
 
+
     public function persist($data, array $context = [])
     {
-// call your persistence layer to save $data
-        $referenceData =$data;
         $this->financialOperationrepository->add($data);
         $data->setTotalCost($data->getPrice() * $data->getRecurssDuration() + $data->getLastMensuality());
 
